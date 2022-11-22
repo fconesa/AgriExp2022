@@ -15,12 +15,12 @@ AgriExp2022 repository includes the following files:
 
 # JavaScript code to be implemented in Google Earth Engine(c)
 
-1. AgriExp_v1.txt -> first version of the AgriExp algorithm 
-2. TimeSeries.txt -> MODIS NDVI regional time series
+1. script_AgriExp_v1.txt -> first version of the AgriExp algorithm 
+2. script_TimeSeries.txt -> MODIS NDVI regional time series
 
 # R script
 
-3. AgriExpR.txt -> Summary statistics, counts and plot visualisation of AgriExp vector output table
+3. script_AgriExp_R.txt -> Summary statistics, counts and plot visualisation of AgriExp vector output table
 
 # Dataset
 
