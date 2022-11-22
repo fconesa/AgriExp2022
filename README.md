@@ -11,7 +11,7 @@ submitted to Remote Senisng
 
 Link to the original publication -> [insert link]
 
-AgriExp 2022 repository includes: 
+AgriExp2022 repository includes the following files: 
 
 1. AgriExp_v1.txt -> JavaScript code to be implemented in Google Earth Engine(c)
 2. TimeSeries.txt -> JavaScript code to be implemented in Google Earth Engine(c)
