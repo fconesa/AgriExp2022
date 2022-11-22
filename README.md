@@ -18,11 +18,11 @@ AgriExp2022 repository includes the following files:
 1. AgriExp_v1.txt -> first version of the AgriExp algorithm 
 2. TimeSeries.txt -> MODIS NDVI regional time series
 
-# R Scripts
+# R script
 
 3. AgriExpR.txt -> Summary statistics, counts and plot visualisation of AgriExp vector output table
 
-# DATASET
+# Dataset
 
 4. 20221104_T0_4_AgriExp_buffers_dist50.csv -> AgriExp vector ouput table
 
