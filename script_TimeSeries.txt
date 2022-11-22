@@ -1,0 +1,366 @@
+
+
+//* JavaScript code to be implemented in Google Earth Engine(c) to accompany the paper: 
+
+// Conesa, F.C.; Orengo, H.A.; Lobo, A. and Petrie, C.A. 2022. 
+// 'An algorithm to detect endangered Cultural Heritage by agri-cultural expansion in drylands at a global scale' 
+// submitted to Remote Sensing.
+
+//                ------------- ooo -------------
+
+// To execute the algorithm paste this code into Google Earth Engine editor and press "run"
+
+//                ------------- ooo -------------
+
+// This code creates two time series charts to evlauate vegetation phenology and seasonality
+// in three distict agricultural and rangeland ecosystims within the Cholistan Desert
+
+
+// ======================================================================
+// ==== IMPORT REGIONS AS GEOMETRIES
+
+var AOI = 
+    /* color: #ffff99 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.Geometry.Polygon(
+        [[[69.97688320312498, 29.230059001952394],
+          [69.97688320312498, 27.61902657433307],
+          [72.35816982421873, 27.61902657433307],
+          [72.35816982421873, 29.230059001952394]]], null, false),
+    agriIndus = 
+    /* color: #07d640 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.86185196724946, 29.06784879578698],
+                  [71.86185196724946, 29.065326221347156],
+                  [71.86514571991975, 29.065326221347156],
+                  [71.86514571991975, 29.06784879578698]]], null, false),
+            {
+              "class": "winter_summer",
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.81388660204074, 29.046086965640036],
+                  [71.81388660204074, 29.043554479134006],
+                  [71.81689067613742, 29.043554479134006],
+                  [71.81689067613742, 29.046086965640036]]], null, false),
+            {
+              "class": "winter_summer",
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.71714958837966, 29.05394576717396],
+                  [71.71714958837966, 29.051526021296233],
+                  [71.7205613582466, 29.051526021296233],
+                  [71.7205613582466, 29.05394576717396]]], null, false),
+            {
+              "class": "winter_summer",
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.65274235095241, 28.996716622252972],
+                  [71.65274235095241, 28.99411723556025],
+                  [71.65532800044276, 28.99411723556025],
+                  [71.65532800044276, 28.996716622252972]]], null, false),
+            {
+              "class": "winter_summer",
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.66221540944537, 29.027771832836272],
+                  [71.66221540944537, 29.024657250979853],
+                  [71.6654984332796, 29.024657250979853],
+                  [71.6654984332796, 29.027771832836272]]], null, false),
+            {
+              "class": "winter_summer",
+              "system:index": "4"
+            })]),
+    agriNew = 
+    /* color: #ff7811 */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.07288383935105, 27.897092580271842],
+                  [71.07288383935105, 27.888292897535443],
+                  [71.08421349022996, 27.888292897535443],
+                  [71.08421349022996, 27.897092580271842]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.56508577491665, 28.609788718624937],
+                  [71.56508577491665, 28.60029408089908],
+                  [71.57607210304165, 28.60029408089908],
+                  [71.57607210304165, 28.609788718624937]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.68476050302442, 28.139128342856257],
+                  [71.68476050302442, 28.139128342856257],
+                  [71.68476050302442, 28.139128342856257],
+                  [71.68476050302442, 28.139128342856257]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.68750708505567, 28.140339310892625],
+                  [71.68750708505567, 28.127774851847843],
+                  [71.7002100269502, 28.127774851847843],
+                  [71.7002100269502, 28.140339310892625]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[70.94515246030413, 28.068730907167982],
+                  [70.94515246030413, 28.061460042814065],
+                  [70.95382135984026, 28.061460042814065],
+                  [70.95382135984026, 28.068730907167982]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "4"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[70.70669304032519, 28.035495704122503],
+                  [70.70669304032519, 28.02939693004377],
+                  [70.71536193986132, 28.02939693004377],
+                  [70.71536193986132, 28.035495704122503]]], null, false),
+            {
+              "class": "seasonal",
+              "system:index": "5"
+            })]),
+    seasonalVeg = 
+    /* color: #005c2c */
+    /* displayProperties: [
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      },
+      {
+        "type": "rectangle"
+      }
+    ] */
+    ee.FeatureCollection(
+        [ee.Feature(
+            ee.Geometry.Polygon(
+                [[[72.06570813213014, 29.032539706078296],
+                  [72.06570813213014, 29.02743648136928],
+                  [72.07111546550416, 29.02743648136928],
+                  [72.07111546550416, 29.032539706078296]]], null, false),
+            {
+              "class": "dahar",
+              "system:index": "0"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[72.11703335838233, 29.06020922770895],
+                  [72.11703335838233, 29.057020597091963],
+                  [72.12347066001807, 29.057020597091963],
+                  [72.12347066001807, 29.06020922770895]]], null, false),
+            {
+              "class": "dahar",
+              "system:index": "1"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[72.02606122123412, 29.062285704416148],
+                  [72.02606122123412, 29.057709143011273],
+                  [72.03061024772337, 29.057709143011273],
+                  [72.03061024772337, 29.062285704416148]]], null, false),
+            {
+              "class": "dahar",
+              "system:index": "2"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.14771567530552, 28.779511459574085],
+                  [71.14771567530552, 28.772590181567768],
+                  [71.15681372828404, 28.772590181567768],
+                  [71.15681372828404, 28.779511459574085]]], null, false),
+            {
+              "class": "dahar",
+              "system:index": "3"
+            }),
+        ee.Feature(
+            ee.Geometry.Polygon(
+                [[[71.32006928771477, 28.855868424929746],
+                  [71.32006928771477, 28.85195932161451],
+                  [71.32478997558098, 28.85195932161451],
+                  [71.32478997558098, 28.855868424929746]]], null, false),
+            {
+              "class": "dahar",
+              "system:index": "4"
+            })]);
+
+
+ 
+// ======================================================================
+// ==== PRE-SETTINGS
+
+
+Map.setCenter(71.8116, 28.9206, 8);
+Map.setOptions('SATELLITE');
+
+// Call and filter monthly MODIS Vegetation Index (VIs) and select NDVI band
+var vegIndices = ee.ImageCollection('MODIS/006/MOD13A1')
+    .filterBounds(AOI)
+    .filter(ee.Filter.date('2017-01-01', '2022-11-05'))
+    .select(['NDVI']);
+
+// Merge FeatureCollection classes
+var collection = agriIndus.merge(seasonalVeg).merge(agriNew) // merge
+
+
+
+// ======================================================================
+// === CHART BY REGION - AVERAGE MEAN 2017-2022 - DOY
+
+
+// set chart style options
+  var chartsStyle_DOY = {
+  curveType: 'function',
+  title: 'Average NDVI trends 2017-2022 (DOY)',
+  legend: { position: 'top'},
+  hAxis: {
+    title: 'Day of year',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'},
+  },
+  vAxis: {
+    title: 'NDVI (x1e4)',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'},
+    format: 'short',
+  },
+   series: {
+    0: {lineWidth: 2, color: '#009C29', pointSize: 1}, // green = Summer and Winter
+    1: {lineWidth: 2, color: '#FFA500', pointSize: 1}, // orange = Winter
+    2: {lineWidth: 6, color: '#00392E', lineDashStyle: [2, 2]} // dark green = Seasonal
+  },
+  chartArea: {backgroundColor: 'EBEBEB'}
+};
+
+// set chart type and variables 
+var chart = ui.Chart.image
+                .doySeriesByRegion({
+                  imageCollection: vegIndices, // entire collection 2017-2022
+                  bandName: 'NDVI',
+                  regions: collection,
+                  regionReducer: ee.Reducer.mean(),
+                  scale: 500,
+                  yearReducer: ee.Reducer.mean(),
+                  seriesProperty: 'class',
+                  startDay: 1,
+                  endDay: 365
+                })
+chart.setSeriesNames(["Summer and winter crops", "Winter crops", "Desert vegetation"])
+chart.setChartType('AreaChart')
+chart.setOptions(chartsStyle_DOY);
+
+// print chart
+print(chart, "CHART DOY");
+
+
+
+// ======================================================================
+// === CHART BY REGION - AVERAGE MEAN 2017-2022 - TIME SERIES
+
+
+// set chart style options
+  var chartsStyle_SERIES = {
+  curveType: 'function',
+  title: 'Average NDVI trends 2017-2022',
+  legend: { position: 'top'},
+  hAxis: {
+    title: 'Month-Year',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'},
+  },
+  vAxis: {
+    title: 'NDVI (x1e4)',
+    titleTextStyle: {italic: false, bold: true},
+    gridlines: {color: 'FFFFFF'},
+    format: 'short',
+  },
+   series: {
+    0: {lineWidth: 2, color: '#009C29', pointSize: 1}, // green = Summer and Winter
+    1: {lineWidth: 2, color: '#FFA500', pointSize: 1}, // orange = Winter
+    2: {lineWidth: 6, color: '#00392E', lineDashStyle: [2, 2]} // dark green = Seasonal
+  },
+  chartArea: {backgroundColor: 'EBEBEB'}
+};
+
+// set chart type and variables 
+chart = ui.Chart.image.seriesByRegion(vegIndices, collection, ee.Reducer.mean(), 'NDVI', 10, 'system:time_start', 'class')
+chart.setSeriesNames(["Summer and winter crops", "Winter crops", "Desert vegetation"])
+chart.setChartType('AreaChart')
+chart.setOptions(chartsStyle_SERIES);
+
+// print chart
+print(chart, "CHART TIME SERIES");
+
+
+//                ------------- END -------------

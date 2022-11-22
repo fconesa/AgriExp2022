@@ -1,0 +1,136 @@
+
+
+# ================================
+# @fconesa November 2022
+# ================================
+
+# Script to accompany the paper: 
+# Conesa, F.C.; Orengo, H.A.; Lobo, A. and Petrie, C.A. 2022. 
+# 'An algorithm to detect endangered Cultural Heritage by agri-cultural expansion in drylands at a global scale' 
+# submitted to Remote Sensing.
+
+
+########################################################################################
+# ==================== requirements
+
+require(tidyverse) # tibble
+require(ggplot2) # plot
+require(ggpubr) # arrange
+
+#########################################################################################
+# ==================== read .csv
+
+mapBuffersDF <- read.csv(file = (`"[user directory]/20221104_T0_4_AgriExp_buffers_dist50.csv")
+
+
+#########################################################################################
+# ==================== explore buffer output
+
+# summary views
+summary(mapBuffersDF)
+str(mapBuffersDF)
+
+# convert variables to factor levels
+mapBuffersDF$areaLevels = as.factor(as.character(mapBuffersDF$areaLevels)) # levels
+mapBuffersDF$firstYR <- as.factor(as.numeric(mapBuffersDF$firstYR)) # first year
+mapBuffersDF$lastYR <- as.factor(as.numeric(mapBuffersDF$lastYR)) # last year 
+mapBuffersDF$mostYR <- as.factor(as.numeric(mapBuffersDF$mostYR)) # most year
+str(mapBuffersDF) # check
+
+# subset and print count observations by group
+tableIMPACT = mapBuffersDF %>% group_by(areaImpact) %>% summarize(num=n())
+tableIMPACT # total endangered buffers
+tableLEVELS = mapBuffersDF %>% group_by(areaLevels) %>% summarize(num=n())
+tableLEVELS # endangered categorical levels
+tableFIRST = mapBuffersDF %>% group_by(firstYR) %>% summarize(num=n())
+tableFIRST # first year encroachment
+tableLAST = mapBuffersDF %>% group_by(lastYR) %>% summarize(num=n())
+tableLAST # last year encroachment
+tableMOST = mapBuffersDF %>% group_by(mostYR) %>% summarize(num=n())
+tableMOST # most (mode) year encroachment
+
+
+#########################################################################################
+# ==================== plot - barplot first year
+
+# define color palette for years to match GEE AgriExp color palette
+paletteYears <- c(
+  "#13b133", # green = "2017"
+  "#ecbf6c", # pale orange = "2018"
+  "#ffcd07", # dark yellow = "2019"
+  "#ec6b14", # dark orange = "2020"
+  "#dc0c10", # red = "2021"
+  "#8d191c") # dark red = "2022"
+
+# use "tableFIRST" filtered dataset 
+str(tableFIRST) # check tibble
+
+# rename "2017" to "≤ 2017" factor level
+levels(tableFIRST$firstYR) = c("\u2265 2017", "2018", "2019", "2020", "2021", "2022") #3 use UNICODE characters to dislay 2017 sign
+
+# barplot
+plot1 = tableFIRST %>% filter(firstYR != 'NA') %>% # filter "none" factor level 
+  ggplot(aes(x=firstYR, y=num, fill= firstYR)) + 
+  geom_bar(stat="identity", na.rm = TRUE) +
+  geom_text(aes(label=num), vjust=1.6, color="white", size=8) +
+  scale_fill_manual(values = paletteYears) +
+  xlab("First impact year") + ylab("Number of sites") +
+  guides(fill = guide_legend(title = "Endangered levels")) +
+  theme_light() +
+  theme(
+    axis.text = element_text(size=10),
+    axis.title.x = element_text(size=12),
+    axis.title.y = element_text(size=12),
+    legend.position="none")
+plot1
+
+
+#########################################################################################
+# ==================== plot - lollipop with endangered levels
+
+# use "tableLEVELS" filtered dataset 
+str(tableLEVELS) # check tibble
+
+# check order of factor levels 
+levels(tableLEVELS$areaLevels)
+
+# re-order factor levels for "areaLevels"   
+tableLEVELS$areaLevels <- factor(tableLEVELS$areaLevels, 
+                                 levels=c("None", "Low", "Moderate", "High", "Extreme"))
+levels(tableLEVELS$areaLevels) # check
+
+# define color palette for categorical endangered levels to match GEE AgriExp color palette
+paletteLEVELS_4 = c("#ece16c", # pale yellow = "low"
+                    "#ffcd07", # dark yellow = "moderate"
+                    "#ec6b14", # dark orange = "high
+                    "#dc0c10", # red = "extreme"
+                    "#808080") # grey = "none"
+
+plot2 = tableLEVELS %>% filter(areaLevels != 'None') %>% # filter "none" factor level 
+  ggplot(aes(x=areaLevels, y=num, colour = areaLevels)) +
+  geom_point(size=15) +
+  geom_segment(aes(x=areaLevels, xend=areaLevels, y=0, yend=num, linewidth=0.5)) +
+  scale_color_manual(values = paletteLEVELS_4) +
+  geom_text(aes(label = num), color = "white", size = 8) +
+  xlab("Endangered levels") + 
+  ylab("Number of sites") +
+  theme_light() +
+  coord_flip() + # vertical or horitzonal lollipop 
+  theme(
+    axis.text = element_text(size=10),
+    axis.title.y = element_text(size=12),
+    legend.position="none")
+plot2
+
+#########################################################################################
+# ==================== ARRANGE PLOTS
+
+ggarrange(plot1, plot2,
+          ncol = 2, nrow = 1)
+
+
+# --- END --- 
+
+
+
+
