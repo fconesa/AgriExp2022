@@ -26,9 +26,8 @@ AgriExp2022 repository includes the following files:
 
 4. 20221104_T0_4_AgriExp_buffers_dist50.csv -> AgriExp vector ouput table
 
-
+-----
 *Last repository update -> 21 November 2022
-
 
 
 ----- END -----
