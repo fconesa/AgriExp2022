@@ -5,11 +5,10 @@
 Supplementary Materials to accompany the paper
 
 Conesa, F.C., Orengo, H.A., Lobo, A., Petrie, C., 
-2022, 
-An algorithm to detect endangered Cultural Heritage by agricultural expansion at large-scale, 
-submitted to Remote Senisng
+2022, Remote Sensing, 15, 53
+An algorithm to detect endangered cultural heritage by agricultural expansion in drylands at a global scale 
 
-Link to the original publication -> [insert link]
+Link to the original publication -> [https://www.mdpi.com/2072-4292/15/1/53]
 
 AgriExp2022 repository includes the following files: 
 
@@ -27,7 +26,7 @@ AgriExp2022 repository includes the following files:
 4. 20221104_T0_4_AgriExp_buffers_dist50.csv -> AgriExp vector ouput table
 
 -----
-Last repository update -> 22 November 2022
+Last repository update -> 25 Aug 2023
 
 
 ----- END -----
