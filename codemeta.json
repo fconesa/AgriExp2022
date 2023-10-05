@@ -1,0 +1,67 @@
+{
+    "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+    "@type": "SoftwareSourceCode",
+    "license": "https://spdx.org/licenses/GPL-3.0",
+    "codeRepository": "https://github.com/fconesa/AgriExp2022",
+    "dateCreated": "2022-11-22",
+    "dateModified": "2022-11-22",
+    "downloadUrl": "https://doi.org/10.34810/data600",
+    "issueTracker": "https://github.com/fconesa/AgriExp2022/issues",
+    "name": "AgriExp2022",
+    "version": "1.0.0",
+    "identifier": "10.34810/data600",
+    "description": "An algorithm that combines Big Earth Data and geospatial analysis in Google Earth Engine for the automated detection of archaeological mounds and Cultural Heritage sites that are potentially endangered by new agricultural developments.",
+    "applicationCategory": "Arts and Humanities; Computer and Information Science",
+    "funding": "2020-BP-00203, JC2018-038319-I, 794711",
+    "developmentStatus": "active",
+    "referencePublication": "http://doi.org/10.3390/rs15010053",
+    "funder": {
+        "@type": "Organization",
+        "name": "AGAUR, Spanish Ministry of Science, Innovation and Universities, European Union"
+    },
+    "keywords": [
+        "endangered places",
+        "agriculture",
+        "remote sensing",
+        "Google Earth",
+        "geospatial data",
+        "geographic information systems",
+        "algorithms",
+        "Cholistan (desert)",
+        "Copernicus",
+        "Sentinel-2",
+        "Planetscope"
+    ],
+    "programmingLanguage": [
+        "R"
+    ],
+    "operatingSystem": [
+        "Linux",
+        "Windows",
+        "macOS"
+    ],
+    "author": [
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-4026-7266",
+            "givenName": "Francesc C.",
+            "familyName": "Conesa",
+            "email": "fconesa@icac.cat",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Institut Català d’Arqueologia Clàssica (ICAC)"
+            }
+        },
+        {
+            "@type": "Person",
+            "@id": "https://orcid.org/0000-0002-9385-2370",
+            "givenName": "Hèctor A.",
+            "familyName": "Orengo Romeu",
+            "email": "horengo@icac.cat",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "Institut Català d’Arqueologia Clàssica (ICAC)"
+            }
+        }
+    ]
+}
